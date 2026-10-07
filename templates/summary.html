@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Summary</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container narrow">
+    <header>
+        <div>
+            <p class="eyebrow">FINANCIAL TELEMETRY</p>
+            <h1>Summary</h1>
+            <p class="subtitle">A simple overview of your spending.</p>
+        </div>
+        <a class="button secondary" href="{{ url_for('index') }}">Back to Tracker</a>
+    </header>
+
+    <section class="cards">
+        <div class="card">
+            <span>Grand Total</span>
+            <strong>₹{{ "%.2f"|format(total) }}</strong>
+        </div>
+        <div class="card">
+            <span>Active Records</span>
+            <strong>{{ count }}</strong>
+        </div>
+    </section>
+
+    <section class="panel">
+        <h2>Category-wise Spending</h2>
+        {% if breakdown %}
+            {% for category, value in breakdown.items() %}
+                <div class="summary-row">
+                    <span>{{ category }}</span>
+                    <div class="bar-area">
+                        <div class="bar" style="width: {{ (value / total * 100) if total else 0 }}%"></div>
+                    </div>
+                    <strong>₹{{ "%.2f"|format(value) }}</strong>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="muted">No expenses recorded yet.</p>
+        {% endif %}
+    </section>
+</div>
+</body>
+</html>
